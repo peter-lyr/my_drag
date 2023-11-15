@@ -1,9 +1,31 @@
 local M = {}
-local B = require 'my_base'
+local B = {}
 M.source = B.get_source(debug.getinfo(1)['source'])
 M.loaded = B.get_loaded(M.source)
 -- package.loaded[M.loaded] = nil
 --------------------------------------------
+
+function B.notify_info(content)
+  vim.notify(content)
+end
+
+function B.rep_slash(content)
+  content = string.gsub(content, '/', '\\')
+  return content
+end
+
+function B.rep_slash_lower(content)
+  return vim.fn.tolower(B.rep_slash(content))
+end
+
+function B.rep_baskslash(content)
+  content = string.gsub(content, '\\', '/')
+  return content
+end
+
+function B.rep_baskslash_lower(content)
+  return vim.fn.tolower(B.rep_baskslash(content))
+end
 
 M.image_root_dir = '.images'
 M.image_root_md = '_.md'
@@ -100,6 +122,17 @@ M.append_image = function(project, image_fname, markdown_fname)
   end
   return { callback, { M.append_line_pre(), }, }
 end
+
+-- B.get_cfile
+-- B.get_loaded
+-- B.get_source
+-- B.notify_info
+-- B.rep_baskslash
+-- B.rep_baskslash_lower
+-- B.rep_slash
+-- B.rep_slash_lower
+-- B.system_cd
+-- B.system_run
 
 M.update = function(cur)
   local drag_images_docs_update_py = require 'plenary.path':new(M.source .. '.update.py')
